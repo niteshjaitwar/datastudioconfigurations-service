@@ -1,0 +1,12 @@
+ingress:
+  hosts:
+    - ds.config.ahub.${deploy_env}.${deploy_dc}.${deploy_dns_zone}
+  tls:
+    clusterIssuer: adp-ca-issuer
+  class: nginx
+container:
+  env:
+    JDK_JAVA_OPTIONS:
+      > # multi-line string. INTENDATION MATTERS! See: <https://yaml-multiline.info/>
+      -Dspring.config.import=configserver:http://esi-ahub-cloud-config-${deploy_env}:8080
+      -Dspring.cloud.config.label=cloud-properties-${deploy_env}
